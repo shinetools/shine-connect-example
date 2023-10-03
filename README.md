@@ -14,7 +14,7 @@ yarn install
 
 ## Usage
 
-Edit configuration in `server/config.js` with the following values
+Copy `server/config.example.js` to a new `server/config.js` and fill the following values
 
 | Variable      | Description                                                                                           |
 | ------------- | ----------------------------------------------------------------------------------------------------- |
