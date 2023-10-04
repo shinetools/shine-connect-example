@@ -31,14 +31,14 @@ const Link = Action.withComponent('a');
 
 const Text = styled.span``;
 
-const Button = ({ text, onClick, to }) => {
+function Button({ text, onClick, to }) {
   const Container = to ? Link : Action;
   return (
     <Container onClick={onClick} href={to}>
       <Text>{text}</Text>
     </Container>
   );
-};
+}
 
 Button.defaultProps = {
   text: '',

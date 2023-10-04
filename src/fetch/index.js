@@ -9,7 +9,7 @@ const checkStatus = (response) => {
   throw error;
 };
 
-const parseJSON = response => response.json();
+const parseJSON = (response) => response.json();
 
 export default (...args) => {
   const options = args[1];
