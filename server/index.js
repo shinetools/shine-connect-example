@@ -5,8 +5,10 @@ const request = require('request-promise-native');
 const url = require('url');
 const config = require('./config');
 
-const SHINE_CONNECT_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
-const SHINE_CONNECT_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
+const { doRequest } = require('./helpers/request');
+
+const SHINE_AUTHENTICATION_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
+const SHINE_AUTHENTICATION_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
 const {
   CLIENT_ID: client_id,
   CLIENT_SECRET: client_secret,
@@ -18,7 +20,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const SHINE_CONNECT_HOST = dev ? SHINE_CONNECT_STAGING_HOST : SHINE_CONNECT_PRODUCTION_HOST;
+const SHINE_CONNECT_HOST = dev
+  ? SHINE_AUTHENTICATION_STAGING_HOST
+  : SHINE_AUTHENTICATION_PRODUCTION_HOST;
 const REDIRECT_PATH = url.parse(redirect_uri).pathname;
 
 app.prepare().then(() => {
@@ -56,14 +60,15 @@ app.prepare().then(() => {
         },
       });
       console.log('Tokens retrieved ✅');
-      // Do something with the access_token & refresh_token
-      // ...
+
       // Display success
-      res.redirect(`/?${qs.stringify({
-        authorized: true,
-        access_token,
-        refresh_token,
-      })}`);
+      res.redirect(
+        `/?${qs.stringify({
+          authorized: true,
+          access_token,
+          refresh_token,
+        })}`,
+      );
     } catch (e) {
       console.error(e);
       res.redirect('/?authorized=false');
@@ -92,6 +97,21 @@ app.prepare().then(() => {
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: 'Error while refreshing token' });
+    }
+  });
+
+  server.get('/bank-accounts', async (req, res) => {
+    const { authorization, companyProfileId } = req.query;
+
+    try {
+      doRequest({
+        method: 'GET',
+        path: `/bank/accounts/query?companyProfileId=${companyProfileId}`,
+        authorization,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
     }
   });
 

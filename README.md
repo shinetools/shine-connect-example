@@ -23,6 +23,11 @@ Copy `server/config.example.js` to a new `server/config.js` and fill the followi
 | SCOPE         | Scope to be granted, will be presented to the user                                                    |
 | REDIRECT_URI  | Redirect URI once authorization is granted. Make sure it is whitelisted in the client `redirectURIs`` |
 
+Add the necessary certificates for mTLS connection:
+
+- `server/certificates/QWAC_KEY.pem`
+- `server/certificates/QWAC_CERT.pem`
+
 Then run
 
 ```
