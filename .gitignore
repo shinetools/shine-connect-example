@@ -1,3 +1,5 @@
 node_modules
 .next
 server/config.js
+server/certificates/*
+!server/certificates/.gitkeep
