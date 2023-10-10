@@ -47,7 +47,7 @@ app.prepare().then(() => {
     }
     console.log('Authorization request accepted 🎉');
     try {
-      const { access_token, refresh_token } = await request({
+      const { access_token, refresh_token, metadata } = await request({
         uri: `${SHINE_CONNECT_HOST}/oauth2/token`,
         method: 'GET',
         json: true,
@@ -61,12 +61,14 @@ app.prepare().then(() => {
       });
       console.log('Tokens retrieved ✅');
 
+      const { companyProfileId } = metadata;
       // Display success
       res.redirect(
         `/?${qs.stringify({
           authorized: true,
           access_token,
           refresh_token,
+          companyProfileId,
         })}`,
       );
     } catch (e) {
@@ -101,14 +103,15 @@ app.prepare().then(() => {
   });
 
   server.get('/bank-accounts', async (req, res) => {
-    const { authorization, companyProfileId } = req.query;
+    const { access_token, companyProfileId } = req.query;
 
     try {
-      doRequest({
+      const data = await doRequest({
         method: 'GET',
         path: `/bank/accounts/query?companyProfileId=${companyProfileId}`,
-        authorization,
+        authorization: access_token,
       });
+      res.status(200).send(data);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: 'Error while making a request' });
