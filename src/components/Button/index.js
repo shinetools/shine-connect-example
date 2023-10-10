@@ -7,6 +7,7 @@ const Action = styled.button`
   justify-content: center;
   align-items: center;
   height: 50px;
+  margin: 10px 0;
   padding-left: 40px;
   padding-right: 40px;
   border: 0;

@@ -1,5 +1,5 @@
 import {
-  compose, withProps, withState, withStateHandlers,
+  compose, withProps, withState, withStateHandlers, withHandlers,
 } from 'recompose';
 import qs from 'qs';
 import { withRouter } from 'next/router';
@@ -35,6 +35,19 @@ export default compose(
           .then(() => props.setHasBeenRefreshed(true))
           .catch(() => props.setHasRefreshFailed(true));
       },
+    },
+  ),
+  withHandlers(
+    {
+      getBankAccounts: (props) => () => fetch('/bank-accounts', {
+        method: 'GET',
+        qs: {
+          access_token: props.access_token,
+          refresh_token: props.refresh_token,
+          company_profile_id: props.companyProfileId,
+        },
+      }).then((result) => console.log(result))
+        .catch((error) => console.log(error)),
     },
   ),
 )(Application);

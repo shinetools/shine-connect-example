@@ -23,7 +23,7 @@ const Refused = Text.extend`
 `;
 
 function Application({
-  authorized, refreshToken, hasBeenRefreshed, hasRefreshFailed,
+  authorized, refreshToken, hasBeenRefreshed, hasRefreshFailed, getBankAccounts,
 }) {
   return (
     <Container>
@@ -46,6 +46,7 @@ function Application({
             <Emoji name="tada" emoji="🎉" />
           </Accepted>,
           <Button key="refresh" text="Refresh token" onClick={refreshToken} />,
+          <Button key="bankAccounts" text="Get bank accounts" onClick={getBankAccounts} />,
           hasBeenRefreshed && (
           <Accepted key="refreshed">
             Token refreshed
@@ -75,6 +76,7 @@ Application.defaultProps = {
 Application.propTypes = {
   authorized: PropTypes.bool,
   refreshToken: PropTypes.func.isRequired,
+  getBankAccounts: PropTypes.func.isRequired,
   hasBeenRefreshed: PropTypes.bool,
   hasRefreshFailed: PropTypes.bool,
 };
