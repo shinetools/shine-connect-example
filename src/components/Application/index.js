@@ -23,7 +23,12 @@ const Refused = Text.extend`
 `;
 
 function Application({
-  authorized, refreshToken, hasBeenRefreshed, hasRefreshFailed, getBankAccounts,
+  authorized,
+  refreshToken,
+  hasBeenRefreshed,
+  hasRefreshFailed,
+  getBankAccounts,
+  createBankTransferRecipient,
 }) {
   return (
     <Container>
@@ -35,31 +40,36 @@ function Application({
       ) : authorized === false ? (
         <Refused>
           Authorization request denied
-          {' '}
           <Emoji name="disappointed" emoji="😞" />
         </Refused>
       ) : (
         [
           <Accepted key="accepted">
             Authorization request accepted
-            {' '}
             <Emoji name="tada" emoji="🎉" />
           </Accepted>,
           <Button key="refresh" text="Refresh token" onClick={refreshToken} />,
-          <Button key="bankAccounts" text="Get bank accounts" onClick={getBankAccounts} />,
+          <Button
+            key="bankAccounts"
+            text="Get bank accounts"
+            onClick={getBankAccounts}
+          />,
+          <Button
+            key="createBankTransferRecipient"
+            text="Create a bank transfer recipient"
+            onClick={createBankTransferRecipient}
+          />,
           hasBeenRefreshed && (
-          <Accepted key="refreshed">
-            Token refreshed
-            {' '}
-            <Emoji name="repeat" emoji="🔁" />
-          </Accepted>
+            <Accepted key="refreshed">
+              Token refreshed
+              <Emoji name="repeat" emoji="🔁" />
+            </Accepted>
           ),
           hasRefreshFailed && (
-          <Refused key="failed">
-            Token has not been refreshed
-            {' '}
-            <Emoji name="sob" emoji="😭" />
-          </Refused>
+            <Refused key="failed">
+              Token has not been refreshed
+              <Emoji name="sob" emoji="😭" />
+            </Refused>
           ),
         ]
       )}
@@ -77,6 +87,7 @@ Application.propTypes = {
   authorized: PropTypes.bool,
   refreshToken: PropTypes.func.isRequired,
   getBankAccounts: PropTypes.func.isRequired,
+  createBankTransferRecipient: PropTypes.func.isRequired,
   hasBeenRefreshed: PropTypes.bool,
   hasRefreshFailed: PropTypes.bool,
 };

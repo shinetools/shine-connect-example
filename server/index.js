@@ -61,7 +61,7 @@ app.prepare().then(() => {
       });
       console.log('Tokens retrieved ✅');
 
-      const { companyProfileId } = metadata;
+      const { companyProfileId, uid, companyUserId } = metadata;
       // Display success
       res.redirect(
         `/?${qs.stringify({
@@ -69,6 +69,8 @@ app.prepare().then(() => {
           access_token,
           refresh_token,
           companyProfileId,
+          companyUserId,
+          uid,
         })}`,
       );
     } catch (e) {
@@ -103,13 +105,43 @@ app.prepare().then(() => {
   });
 
   server.get('/bank-accounts', async (req, res) => {
-    const { access_token, companyProfileId } = req.query;
+    const { access_token, company_profile_id: companyProfileId } = req.query;
 
     try {
       const data = await doRequest({
         method: 'GET',
         path: `/bank/accounts/query?companyProfileId=${companyProfileId}`,
         authorization: access_token,
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
+    }
+  });
+
+  server.post('/bank-transfer-recipient', async (req, res) => {
+    const {
+      access_token,
+      company_profile_id: companyProfileId,
+      company_user_id: companyUserId,
+      uid,
+    } = req.query;
+
+    try {
+      // TODO Allow to input IBAN and BIC
+      const data = await doRequest({
+        method: 'POST',
+        path: '/bank/transfers/recipients',
+        authorization: access_token,
+        payload: {
+          companyUserId,
+          companyProfileId,
+          uid,
+          iban: '',
+          swiftBic: '',
+          name: 'Test recipient using Shine Connect example',
+        },
       });
       res.status(200).send(data);
     } catch (error) {
