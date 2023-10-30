@@ -13,6 +13,11 @@ const SHINE_CONNECT_HOST = isDev
   ? SHINE_CONNECT_STAGING_HOST
   : SHINE_CONNECT_PRODUCTION_HOST;
 
+const QWAC_KEY = fs.readFileSync(config.QWAC_KEY_PATH);
+const QSEAL_KEY = fs.readFileSync(config.QSEAL_KEY_PATH);
+const QWAC_CERT = fs.readFileSync(config.QWAC_CERT_PATH);
+const ROOT_CERT = fs.readFileSync(config.ROOT_CA_PATH);
+
 const getRequiredQsealHeaders = () => [
   '(request-target)',
   'date',
@@ -63,11 +68,6 @@ const getRequestHeaders = (method, port = 443) => ({
 const doRequest = ({
   method, path, authorization, payload,
 }) => new Promise((resolve, reject) => {
-  const QWAC_KEY = fs.readFileSync(config.QWAC_KEY_PATH);
-  const QSEAL_KEY = fs.readFileSync(config.QSEAL_KEY_PATH);
-  const QWAC_CERT = fs.readFileSync(config.QWAC_CERT_PATH);
-  const ROOT_CERT = fs.readFileSync(config.ROOT_CA_PATH);
-
   let postData;
   if (payload) {
     try {
