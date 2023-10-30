@@ -13,4 +13,6 @@ injectGlobal`
   }
 `;
 
-export default () => <Application />;
+export default function () {
+  return <Application />;
+}

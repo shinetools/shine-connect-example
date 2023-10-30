@@ -1,10 +1,12 @@
-import { compose, withProps, withState, withStateHandlers } from 'recompose';
+import {
+  compose, withProps, withState, withStateHandlers,
+} from 'recompose';
 import qs from 'qs';
 import { withRouter } from 'next/router';
 import Application from '../../components/Application';
 import fetch from '../../fetch';
 
-const parseQueryString = router => qs.parse(router.asPath.split('?')[1]);
+const parseQueryString = (router) => qs.parse(router.asPath.split('?')[1]);
 
 export default compose(
   withRouter,

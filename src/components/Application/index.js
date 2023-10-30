@@ -22,39 +22,49 @@ const Refused = Text.extend`
   color: #ff3d36;
 `;
 
-const Application = ({
+function Application({
   authorized, refreshToken, hasBeenRefreshed, hasRefreshFailed,
-}) => (
-  <Container>
-    <Head>
-      <title>Shine Connect</title>
-    </Head>
-    {authorized === null ? (
-      <Button text="Login with Shine" to="/shine-connect" />
-    ) : authorized === false ? (
-      <Refused>
-        Authorization request denied <Emoji name="disappointed" emoji="😞" />
-      </Refused>
-    ) : (
-      [
-        <Accepted key="accepted">
-          Authorization request accepted <Emoji name="tada" emoji="🎉" />
-        </Accepted>,
-        <Button key="refresh" text="Refresh token" onClick={refreshToken} />,
-        hasBeenRefreshed && (
+}) {
+  return (
+    <Container>
+      <Head>
+        <title>Shine Connect</title>
+      </Head>
+      {authorized === null ? (
+        <Button text="Login with Shine" to="/shine-connect" />
+      ) : authorized === false ? (
+        <Refused>
+          Authorization request denied
+          {' '}
+          <Emoji name="disappointed" emoji="😞" />
+        </Refused>
+      ) : (
+        [
+          <Accepted key="accepted">
+            Authorization request accepted
+            {' '}
+            <Emoji name="tada" emoji="🎉" />
+          </Accepted>,
+          <Button key="refresh" text="Refresh token" onClick={refreshToken} />,
+          hasBeenRefreshed && (
           <Accepted key="refreshed">
-            Token refreshed <Emoji name="repeat" emoji="🔁" />
+            Token refreshed
+            {' '}
+            <Emoji name="repeat" emoji="🔁" />
           </Accepted>
-        ),
-        hasRefreshFailed && (
+          ),
+          hasRefreshFailed && (
           <Refused key="failed">
-            Token has not been refreshed <Emoji name="sob" emoji="😭" />
+            Token has not been refreshed
+            {' '}
+            <Emoji name="sob" emoji="😭" />
           </Refused>
-        ),
-      ]
-    )}
-  </Container>
-);
+          ),
+        ]
+      )}
+    </Container>
+  );
+}
 
 Application.defaultProps = {
   authorized: null,

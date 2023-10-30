@@ -2,18 +2,24 @@ const next = require('next');
 const express = require('express');
 const qs = require('querystring');
 const request = require('request-promise-native');
+const url = require('url');
+const config = require('./config');
 
-const SHINE_CONNECT_HOST = 'https://api.shine.fr/v2/authentication';
+const SHINE_CONNECT_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
+const SHINE_CONNECT_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
 const {
   CLIENT_ID: client_id,
   CLIENT_SECRET: client_secret,
   SCOPE: scope,
   REDIRECT_URI: redirect_uri,
-} = process.env;
+} = config;
 const PORT = process.env.PORT || 9876;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+const SHINE_CONNECT_HOST = dev ? SHINE_CONNECT_STAGING_HOST : SHINE_CONNECT_PRODUCTION_HOST;
+const REDIRECT_PATH = url.parse(redirect_uri).pathname;
 
 app.prepare().then(() => {
   const server = express();
@@ -29,7 +35,7 @@ app.prepare().then(() => {
   });
 
   // Redirected by Shine with authorization result
-  server.get('/redirect-uri', async (req, res) => {
+  server.get(REDIRECT_PATH, async (req, res) => {
     const { code, error } = req.query;
     if (error || !code) {
       console.log('Authorization request denied 😞');
