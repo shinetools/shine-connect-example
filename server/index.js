@@ -5,8 +5,10 @@ const request = require('request-promise-native');
 const url = require('url');
 const config = require('./config');
 
-const SHINE_CONNECT_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
-const SHINE_CONNECT_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
+const { doRequest } = require('./helpers/request');
+
+const SHINE_AUTHENTICATION_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
+const SHINE_AUTHENTICATION_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
 const {
   CLIENT_ID: client_id,
   CLIENT_SECRET: client_secret,
@@ -18,7 +20,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const SHINE_CONNECT_HOST = dev ? SHINE_CONNECT_STAGING_HOST : SHINE_CONNECT_PRODUCTION_HOST;
+const SHINE_CONNECT_HOST = dev
+  ? SHINE_AUTHENTICATION_STAGING_HOST
+  : SHINE_AUTHENTICATION_PRODUCTION_HOST;
 const REDIRECT_PATH = url.parse(redirect_uri).pathname;
 
 app.prepare().then(() => {
@@ -43,7 +47,7 @@ app.prepare().then(() => {
     }
     console.log('Authorization request accepted 🎉');
     try {
-      const { access_token, refresh_token } = await request({
+      const { access_token, refresh_token, metadata } = await request({
         uri: `${SHINE_CONNECT_HOST}/oauth2/token`,
         method: 'GET',
         json: true,
@@ -56,14 +60,19 @@ app.prepare().then(() => {
         },
       });
       console.log('Tokens retrieved ✅');
-      // Do something with the access_token & refresh_token
-      // ...
+
+      const { companyProfileId, uid, companyUserId } = metadata;
       // Display success
-      res.redirect(`/?${qs.stringify({
-        authorized: true,
-        access_token,
-        refresh_token,
-      })}`);
+      res.redirect(
+        `/?${qs.stringify({
+          authorized: true,
+          access_token,
+          refresh_token,
+          companyProfileId,
+          companyUserId,
+          uid,
+        })}`,
+      );
     } catch (e) {
       console.error(e);
       res.redirect('/?authorized=false');
@@ -92,6 +101,68 @@ app.prepare().then(() => {
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: 'Error while refreshing token' });
+    }
+  });
+
+  server.get('/bank-accounts', async (req, res) => {
+    const { access_token, company_profile_id: companyProfileId } = req.query;
+
+    try {
+      const data = await doRequest({
+        method: 'GET',
+        path: `/bank/accounts/query?companyProfileId=${companyProfileId}`,
+        authorization: access_token,
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
+    }
+  });
+
+  server.get('/bank-transfers-recipients', async (req, res) => {
+    const { access_token, company_profile_id: companyProfileId } = req.query;
+
+    try {
+      const data = await doRequest({
+        method: 'GET',
+        path: `/bank/transfers/recipients/query?companyProfileId=${companyProfileId}`,
+        authorization: access_token,
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
+    }
+  });
+
+  server.post('/bank-transfer-recipient', async (req, res) => {
+    const {
+      access_token,
+      company_profile_id: companyProfileId,
+      company_user_id: companyUserId,
+      uid,
+    } = req.query;
+
+    try {
+      // TODO Allow to input IBAN and BIC
+      const data = await doRequest({
+        method: 'POST',
+        path: '/bank/transfers/recipients',
+        authorization: access_token,
+        payload: {
+          companyUserId,
+          companyProfileId,
+          uid,
+          iban: '',
+          swiftBic: '',
+          name: 'Test recipient using Shine Connect example',
+        },
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
     }
   });
 
