@@ -29,6 +29,7 @@ function Application({
   hasRefreshFailed,
   getBankAccounts,
   createBankTransferRecipient,
+  getBankTransferRecipients,
 }) {
   return (
     <Container>
@@ -59,6 +60,11 @@ function Application({
             text="Create a bank transfer recipient"
             onClick={createBankTransferRecipient}
           />,
+          <Button
+            key="getBankTransferRecipients"
+            text="Get bank transfer recipients"
+            onClick={getBankTransferRecipients}
+          />,
           hasBeenRefreshed && (
             <Accepted key="refreshed">
               Token refreshed
@@ -87,6 +93,7 @@ Application.propTypes = {
   authorized: PropTypes.bool,
   refreshToken: PropTypes.func.isRequired,
   getBankAccounts: PropTypes.func.isRequired,
+  getBankTransferRecipients: PropTypes.func.isRequired,
   createBankTransferRecipient: PropTypes.func.isRequired,
   hasBeenRefreshed: PropTypes.bool,
   hasRefreshFailed: PropTypes.bool,

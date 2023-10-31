@@ -67,4 +67,16 @@ export default compose(
       .then((result) => console.log({ body: result.body, status: result.statusCode }))
       .catch((error) => console.log(error)),
   }),
+  withHandlers({
+    getBankTransferRecipients: (props) => () => fetch('/bank-transfers-recipients', {
+      method: 'GET',
+      qs: {
+        access_token: props.access_token,
+        refresh_token: props.refresh_token,
+        company_profile_id: props.companyProfileId,
+      },
+    })
+      .then((result) => console.log({ data: result.body.data, status: result.statusCode }))
+      .catch((error) => console.log(error)),
+  }),
 )(Application);

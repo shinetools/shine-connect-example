@@ -120,6 +120,22 @@ app.prepare().then(() => {
     }
   });
 
+  server.get('/bank-transfers-recipients', async (req, res) => {
+    const { access_token, company_profile_id: companyProfileId } = req.query;
+
+    try {
+      const data = await doRequest({
+        method: 'GET',
+        path: `/bank/transfers/recipients/query?companyProfileId=${companyProfileId}`,
+        authorization: access_token,
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Error while making a request' });
+    }
+  });
+
   server.post('/bank-transfer-recipient', async (req, res) => {
     const {
       access_token,
