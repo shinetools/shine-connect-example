@@ -4,6 +4,7 @@ const httpSignature = require('http-signature');
 
 const config = require('../config');
 const { generateDigest } = require('./digest');
+const RequestError = require('./requestError');
 
 const SHINE_CONNECT_PRODUCTION_HOST = 'connect.api.shine.fr';
 const SHINE_CONNECT_STAGING_HOST = 'connect.api.staging.shine.fr';
@@ -65,84 +66,84 @@ const getRequestHeaders = (method, port = 443) => ({
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
 });
 
-const doRequest = ({
-  method, path, authorization, payload,
-}) => new Promise((resolve, reject) => {
-  let postData;
-  if (payload) {
-    try {
-      postData = JSON.stringify(payload);
-      console.log({ postData });
-    } catch (error) {
-      reject(error);
-    }
-  }
-
-  const options = {
-    host: SHINE_CONNECT_HOST,
-    path,
-    method,
-    headers: {
-      ...getRequestHeaders(),
-      ...(postData
-        ? {
-          'Content-Length': postData.length,
-          'Content-Type': 'application/json',
-          digest: generateDigest(postData, QSEAL_KEY),
-        }
-        : {}),
-      Authorization: `Bearer ${authorization}`,
-    },
-    // Client certificates for mutual TLS authentication
-    key: QWAC_KEY,
-    cert: QWAC_CERT,
-    ca: ROOT_CERT,
-  };
-
-  // Make the HTTPS request
-  const req = https.request(options, (res) => {
-    let data = '';
-    res.on('data', (d) => {
-      console.log('Data received');
-      data += d;
-    });
-
-    res.on('end', () => {
-      console.log('End of response');
-
+const doRequest = ({ method, path, authorization, payload }) =>
+  new Promise((resolve, reject) => {
+    let postData;
+    if (payload) {
       try {
-        let responseBody;
-        if (data) {
-          if (res.headers['content-type'].includes('application/json')) {
-            responseBody = JSON.parse(data);
-          } else {
-            responseBody = data;
-          }
-        }
-        resolve({
-          body: responseBody,
-          headers: res.headers,
-          statusCode: res.statusCode,
-        });
+        postData = JSON.stringify(payload);
+        console.log({ postData });
       } catch (error) {
         reject(error);
       }
+    }
+
+    const options = {
+      host: SHINE_CONNECT_HOST,
+      path,
+      method,
+      headers: {
+        ...getRequestHeaders(),
+        ...(postData
+          ? {
+              'Content-Length': postData.length,
+              'Content-Type': 'application/json',
+              digest: generateDigest(postData, QSEAL_KEY),
+            }
+          : {}),
+        Authorization: `Bearer ${authorization}`,
+      },
+      // Client certificates for mutual TLS authentication
+      key: QWAC_KEY,
+      cert: QWAC_CERT,
+      ca: ROOT_CERT,
+    };
+
+    // Make the HTTPS request
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          let responseBody;
+          if (data) {
+            if (res.headers['content-type'].includes('application/json')) {
+              responseBody = JSON.parse(data);
+            } else {
+              responseBody = data;
+            }
+          }
+
+          if (res.statusCode >= 400) {
+            reject(new RequestError(responseBody, res.statusCode));
+          } else {
+            resolve({
+              body: responseBody,
+              status: res.statusCode,
+            });
+          }
+        } catch (error) {
+          reject(error);
+        }
+      });
     });
-  });
 
-  req.on('error', (e) => {
-    console.log('Error');
-    console.error(e);
-    reject(e);
-  });
+    req.on('error', (e) => {
+      console.log('Error');
+      console.error(e);
+      reject(e);
+    });
 
-  signRequest(req);
-  if (postData) {
-    req.write(postData);
-    req.end();
-  } else {
-    req.end();
-  }
-});
+    signRequest(req);
+    if (postData) {
+      req.write(postData);
+      req.end();
+    } else {
+      req.end();
+    }
+  });
 
 module.exports = { doRequest };

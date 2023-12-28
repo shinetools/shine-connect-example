@@ -22,11 +22,28 @@ const Refused = Text.extend`
   color: #ff3d36;
 `;
 
+const OperationOuput = styled.div`
+  padding: 5px;
+  border-top: 1px solid grey;
+`;
+
+const Code = styled.pre`
+  background: #eee;
+  padding: 20px;
+`;
+
+const Error = OperationOuput.extend``;
+const ErrorCode = Code.extend`
+  background: #faa0a0;
+`;
+
 function Application({
   authorized,
   refreshToken,
   hasBeenRefreshed,
   hasRefreshFailed,
+  operationOutput,
+  error,
   getBankAccounts,
   createBankTransferRecipient,
   getBankTransferRecipients,
@@ -77,6 +94,18 @@ function Application({
               <Emoji name="sob" emoji="😭" />
             </Refused>
           ),
+          operationOutput && (
+            <OperationOuput key="operationOutput">
+              <em>Operation output</em>
+              <Code>{operationOutput}</Code>
+            </OperationOuput>
+          ),
+          error && (
+            <Error key="error">
+              <em>Error</em>
+              <ErrorCode>{error}</ErrorCode>
+            </Error>
+          ),
         ]
       )}
     </Container>
@@ -87,6 +116,8 @@ Application.defaultProps = {
   authorized: null,
   hasBeenRefreshed: false,
   hasRefreshFailed: false,
+  operationOutput: null,
+  error: null,
 };
 
 Application.propTypes = {
@@ -97,6 +128,8 @@ Application.propTypes = {
   createBankTransferRecipient: PropTypes.func.isRequired,
   hasBeenRefreshed: PropTypes.bool,
   hasRefreshFailed: PropTypes.bool,
+  operationOutput: PropTypes.string,
+  error: PropTypes.string,
 };
 
 export default Application;
