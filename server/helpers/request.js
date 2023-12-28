@@ -102,8 +102,8 @@ const doRequest = ({ method, path, authorization, payload }) =>
     // Make the HTTPS request
     const req = https.request(options, (res) => {
       let data = '';
-      res.on('data', (d) => {
-        data += d;
+      res.on('data', (chunk) => {
+        data += chunk;
       });
 
       res.on('end', () => {

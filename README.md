@@ -2,7 +2,8 @@
 
 [![Code Owners](https://img.shields.io/badge/owner-platform-blueviolet?style=flat&logo=github)](./.github/CODEOWNERS)
 
-A Shine Connect usage example.
+This projects aims at demonstrating how to use Shine Connect API, including the mTLS setup.  
+Not all routes are included, there is both a `GET` and `POST` that should be enough to get you started.
 
 See the full Shine Connect documentation [here](https://developers.shine.fr/v3.0/reference).
 

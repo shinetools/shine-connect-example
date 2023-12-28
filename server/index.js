@@ -7,9 +7,9 @@ const config = require('./config');
 
 const { doRequest } = require('./helpers/request');
 
-const SHINE_AUTHENTICATION_PRODUCTION_HOST =
+const SHINE_AUTHENTICATION_PRODUCTION_URL =
   'https://api.shine.fr/v2/authentication';
-const SHINE_AUTHENTICATION_STAGING_HOST =
+const SHINE_AUTHENTICATION_STAGING_URL =
   'https://api.staging.shine.fr/v2/authentication';
 const {
   CLIENT_ID: client_id,
@@ -23,8 +23,8 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const SHINE_CONNECT_HOST = dev
-  ? SHINE_AUTHENTICATION_STAGING_HOST
-  : SHINE_AUTHENTICATION_PRODUCTION_HOST;
+  ? SHINE_AUTHENTICATION_STAGING_URL
+  : SHINE_AUTHENTICATION_PRODUCTION_URL;
 const REDIRECT_PATH = url.parse(redirect_uri).pathname;
 
 app.prepare().then(() => {
