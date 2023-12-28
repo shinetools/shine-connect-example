@@ -7,8 +7,10 @@ const config = require('./config');
 
 const { doRequest } = require('./helpers/request');
 
-const SHINE_AUTHENTICATION_PRODUCTION_HOST = 'https://api.shine.fr/v2/authentication';
-const SHINE_AUTHENTICATION_STAGING_HOST = 'https://api.staging.shine.fr/v2/authentication';
+const SHINE_AUTHENTICATION_PRODUCTION_HOST =
+  'https://api.shine.fr/v2/authentication';
+const SHINE_AUTHENTICATION_STAGING_HOST =
+  'https://api.staging.shine.fr/v2/authentication';
 const {
   CLIENT_ID: client_id,
   CLIENT_SECRET: client_secret,
@@ -115,8 +117,10 @@ app.prepare().then(() => {
       });
       res.status(200).send(data);
     } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: 'Error while making a request' });
+      res.status(error.status).send({
+        status: error.status,
+        message: error.body.message,
+      });
     }
   });
 
@@ -131,8 +135,10 @@ app.prepare().then(() => {
       });
       res.status(200).send(data);
     } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: 'Error while making a request' });
+      res.status(error.status).send({
+        status: error.status,
+        message: error.body.message,
+      });
     }
   });
 
@@ -141,11 +147,12 @@ app.prepare().then(() => {
       access_token,
       company_profile_id: companyProfileId,
       company_user_id: companyUserId,
+      iban,
+      bic,
       uid,
     } = req.query;
 
     try {
-      // TODO Allow to input IBAN and BIC
       const data = await doRequest({
         method: 'POST',
         path: '/bank/transfers/recipients',
@@ -154,15 +161,17 @@ app.prepare().then(() => {
           companyUserId,
           companyProfileId,
           uid,
-          iban: '',
-          swiftBic: '',
+          iban,
+          swiftBic: bic,
           name: 'Test recipient using Shine Connect example',
         },
       });
       res.status(200).send(data);
     } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: 'Error while making a request' });
+      res.status(error.status).send({
+        status: error.status,
+        message: error.body.message,
+      });
     }
   });
 

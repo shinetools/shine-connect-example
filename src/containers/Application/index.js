@@ -12,6 +12,8 @@ import fetch from '../../fetch';
 
 const parseQueryString = (router) => qs.parse(router.asPath.split('?')[1]);
 
+const stringifyResponse = (data) => JSON.stringify(data, null, 2);
+
 export default compose(
   withRouter,
   withProps(({ router }) => {
@@ -23,10 +25,14 @@ export default compose(
   }),
   withState('hasBeenRefreshed', 'setHasBeenRefreshed', false),
   withState('hasRefreshFailed', 'setHasRefreshFailed', false),
+  withState('operationOutput', 'setOperationOutput', null),
+  withState('error', 'setError', null),
   withStateHandlers(
     {},
     {
       refreshToken: (state, props) => () => {
+        // FIXME does not update token in URL
+        props.setError(null);
         props.setHasBeenRefreshed(false);
         props.setHasRefreshFailed(false);
         return fetch('/refresh-token', {
@@ -42,41 +48,72 @@ export default compose(
     },
   ),
   withHandlers({
-    getBankAccounts: (props) => () => fetch('/bank-accounts', {
-      method: 'GET',
-      qs: {
-        access_token: props.access_token,
-        refresh_token: props.refresh_token,
-        company_profile_id: props.companyProfileId,
-      },
-    })
-      .then((result) => console.log({ data: result.body.data, status: result.statusCode }))
-      .catch((error) => console.log(error)),
+    getBankAccounts: (props) => () => {
+      props.setError(null);
+      fetch('/bank-accounts', {
+        method: 'GET',
+        qs: {
+          access_token: props.access_token,
+          refresh_token: props.refresh_token,
+          company_profile_id: props.companyProfileId,
+        },
+      })
+        .then((result) => {
+          props.setOperationOutput(stringifyResponse(result.body.data));
+        })
+        .catch((error) => {
+          error.response
+            .json()
+            .then((body) => props.setError(stringifyResponse(body)));
+        });
+    },
   }),
   withHandlers({
-    createBankTransferRecipient: (props) => () => fetch('/bank-transfer-recipient', {
-      method: 'POST',
-      qs: {
-        access_token: props.access_token,
-        refresh_token: props.refresh_token,
-        company_profile_id: props.companyProfileId,
-        company_user_id: props.companyUserId,
-        uid: props.uid,
-      },
-    })
-      .then((result) => console.log({ body: result.body, status: result.statusCode }))
-      .catch((error) => console.log(error)),
+    createBankTransferRecipient: (props) => () => {
+      const iban = prompt('Please enter the IBAN');
+      const bic = prompt('Please enter the BIC');
+      props.setError(null);
+      fetch('/bank-transfer-recipient', {
+        method: 'POST',
+        qs: {
+          access_token: props.access_token,
+          refresh_token: props.refresh_token,
+          company_profile_id: props.companyProfileId,
+          company_user_id: props.companyUserId,
+          uid: props.uid,
+          iban,
+          bic,
+        },
+      })
+        .then((result) => {
+          props.setOperationOutput(stringifyResponse(result.body.data));
+        })
+        .catch((error) => {
+          error.response
+            .json()
+            .then((body) => props.setError(stringifyResponse(body)));
+        });
+    },
   }),
   withHandlers({
-    getBankTransferRecipients: (props) => () => fetch('/bank-transfers-recipients', {
-      method: 'GET',
-      qs: {
-        access_token: props.access_token,
-        refresh_token: props.refresh_token,
-        company_profile_id: props.companyProfileId,
-      },
-    })
-      .then((result) => console.log({ data: result.body.data, status: result.statusCode }))
-      .catch((error) => console.log(error)),
+    getBankTransferRecipients: (props) => () => {
+      props.setError(null);
+      fetch('/bank-transfers-recipients', {
+        method: 'GET',
+        qs: {
+          access_token: props.access_token,
+          refresh_token: props.refresh_token,
+          company_profile_id: props.companyProfileId,
+        },
+      })
+        .then((result) => {
+          props.setOperationOutput(stringifyResponse(result.body.data));
+        })
+        .catch((error) => {
+          error.response
+            .json()
+            .then((body) => props.setError(stringifyResponse(body)));
+        });
+    },
   }),
 )(Application);
