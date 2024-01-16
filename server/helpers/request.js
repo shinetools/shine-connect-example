@@ -37,7 +37,7 @@ const getRequiredQsealHeaders = () => [
 const signRequest = (request) => {
   const qsealHeaders = getRequiredQsealHeaders();
   const qsealKey = fs.readFileSync(config.QSEAL_KEY_PATH);
-  const qsealKeyId = 'PSDFR-ACPR-71758';
+  const qsealKeyId = config.KEY_ID;
 
   if (request.getHeaders().digest) {
     qsealHeaders.push('digest');

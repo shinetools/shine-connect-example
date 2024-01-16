@@ -3,6 +3,7 @@ const config = {
   CLIENT_SECRET: '',
   SCOPE: '',
   REDIRECT_URI: '',
+  KEY_ID: '',
   QWAC_KEY_PATH: `${__dirname}/certificates/QWAC_KEY.pem`,
   QWAC_CERT_PATH: `${__dirname}/certificates/QWAC_CERT.pem`,
   QSEAL_KEY_PATH: `${__dirname}/certificates/QSEAL_KEY.pem`,

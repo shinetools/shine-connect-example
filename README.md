@@ -21,6 +21,7 @@ Copy `server/config.example.js` to a new `server/config.js` and fill the followi
 | ------------- | ---------------------------------------------------------------------------------------------------- |
 | CLIENT_ID     | Client ID given at the creation                                                                      |
 | CLIENT_SECRET | Secret given at the creation                                                                         |
+| KEY_ID        | The key id associated to your QSEAL, it should match your license. e.g: PSDFR-ACPR-XXXXX             |
 | SCOPE         | Scope to be granted, will be presented to the user                                                   |
 | REDIRECT_URI  | Redirect URI once authorization is granted. Make sure it is whitelisted in the client `redirectURIs` |
 
