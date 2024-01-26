@@ -25,7 +25,7 @@ const doRequest = ({ method, path, authorization, payload }) =>
 
     const options = {
       host: SHINE_CONNECT_HOST,
-      port: 10081,
+      port: 10090,
       path,
       method,
       headers: {
