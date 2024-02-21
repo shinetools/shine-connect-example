@@ -30,6 +30,8 @@ const OperationOuput = styled.div`
 const Code = styled.pre`
   background: #eee;
   padding: 20px;
+  max-width: 700px;
+  overflow: scroll;
 `;
 
 const Error = OperationOuput.extend``;
@@ -45,6 +47,7 @@ function Application({
   operationOutput,
   error,
   getBankAccounts,
+  getInvoices,
   createBankTransferRecipient,
   getBankTransferRecipients,
 }) {
@@ -81,6 +84,11 @@ function Application({
             key="getBankTransferRecipients"
             text="Get bank transfer recipients"
             onClick={getBankTransferRecipients}
+          />,
+          <Button
+            key="getInvoices"
+            text="Get invoices"
+            onClick={getInvoices}
           />,
           hasBeenRefreshed && (
             <Accepted key="refreshed">
@@ -124,6 +132,7 @@ Application.propTypes = {
   authorized: PropTypes.bool,
   refreshToken: PropTypes.func.isRequired,
   getBankAccounts: PropTypes.func.isRequired,
+  getInvoices: PropTypes.func.isRequired,
   getBankTransferRecipients: PropTypes.func.isRequired,
   createBankTransferRecipient: PropTypes.func.isRequired,
   hasBeenRefreshed: PropTypes.bool,

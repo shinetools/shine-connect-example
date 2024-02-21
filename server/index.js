@@ -142,6 +142,24 @@ app.prepare().then(() => {
     }
   });
 
+  server.get('/invoices', async (req, res) => {
+    const { access_token, company_profile_id: companyProfileId } = req.query;
+
+    try {
+      const data = await doRequest({
+        method: 'GET',
+        path: `/invoices/query?companyProfileId=${companyProfileId}`,
+        authorization: access_token,
+      });
+      res.status(200).send(data);
+    } catch (error) {
+      res.status(error.status).send({
+        status: error.status,
+        message: error.body.message,
+      });
+    }
+  });
+
   server.post('/bank-transfer-recipient', async (req, res) => {
     const {
       access_token,
