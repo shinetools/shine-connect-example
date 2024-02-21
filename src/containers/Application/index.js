@@ -69,6 +69,27 @@ export default compose(
     },
   }),
   withHandlers({
+    getInvoices: (props) => () => {
+      props.setError(null);
+      fetch('/invoices', {
+        method: 'GET',
+        qs: {
+          access_token: props.access_token,
+          refresh_token: props.refresh_token,
+          company_profile_id: props.companyProfileId,
+        },
+      })
+        .then((result) => {
+          props.setOperationOutput(stringifyResponse(result.body.data));
+        })
+        .catch((error) => {
+          error.response
+            .json()
+            .then((body) => props.setError(stringifyResponse(body)));
+        });
+    },
+  }),
+  withHandlers({
     createBankTransferRecipient: (props) => () => {
       const iban = prompt('Please enter the IBAN');
       const bic = prompt('Please enter the BIC');
