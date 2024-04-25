@@ -5,8 +5,6 @@ import SignIn from './SignIn';
 import { useEffect, useState } from 'react';
 import Authenticated from './Authenticated';
 import { AuthenticatedData } from '../utils';
-import BankOperations from './BankOperations';
-import GeneralInformations from './GeneralInformations';
 
 // get the query string from the router
 // parse authorized, uid, access_token and refresh_token from the query string
@@ -20,13 +18,6 @@ function App() {
     const params = parseQueryString(router) as AuthenticatedData;
     setAuthenticatedData(params);
   }, [router, setAuthenticatedData]);
-
-  if (authenticatedData?.page === 'bank') {
-    return <BankOperations authenticatedData={authenticatedData} />;
-  }
-  if (authenticatedData?.page === 'general') {
-    return <GeneralInformations authenticatedData={authenticatedData} />;
-  }
 
   return authenticatedData?.authorized ? <Authenticated authenticatedData={authenticatedData} /> : <SignIn />;
 }

@@ -2,7 +2,8 @@ import { shineApiHost, isLocal, qsealKeyPath, keyId, qwacCertPath, qwacKeyPath, 
 import { readFileSync } from 'fs';
 import httpSignature, { SignOptions } from 'http-signature';
 import { ClientRequest } from 'http';
-import https from 'http';
+import https from 'https';
+import crypto from 'crypto';
 
 /**
  * This function is exclusively for the Shine development environment.
@@ -55,6 +56,14 @@ const getRequestHeaders = (method, port = 443) => ({
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
 });
 
+const generateDigest = (body: string) => {
+  const privateKey = readFileSync(qsealKeyPath, 'utf-8').toString();
+  const sign = crypto.createSign('SHA256');
+  sign.write(body);
+  sign.end();
+  return sign.sign(privateKey, 'base64');
+};
+
 const signRequest = (request: ClientRequest) => {
   const qsealHeaders = getRequiredQsealHeaders();
   const qsealKey = readFileSync(qsealKeyPath, 'utf-8').toString();
@@ -85,27 +94,29 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       }
     }
 
+    const port = 443;
+
     const options = {
       host: shineApiHost,
-      port: 10081,
+      port,
       path,
       method,
       headers: {
         ...(isLocal ? addLocalLoadBalancerHeaders() : {}), // This line is exclusively for the Shine development environment
-        ...getRequestHeaders(method),
+        ...getRequestHeaders(method, port),
         ...(postData
           ? {
               'Content-Length': postData.length,
               'Content-Type': 'application/json',
-              //digest: generateDigest(postData, QSEAL_KEY),
+              digest: generateDigest(postData),
             }
           : {}),
         Authorization: `Bearer ${authorization}`,
       },
       // Client certificates for mutual TLS authentication
-      // cert: readFileSync(qwacCertPath),
-      // key: readFileSync(qwacKeyPath),
-      // ca: readFileSync(rootCAPath),
+      cert: readFileSync(qwacCertPath),
+      key: readFileSync(qwacKeyPath),
+      ca: readFileSync(rootCAPath),
     };
 
     // Make the HTTPS request

@@ -23,6 +23,7 @@ import webhookHandler from './routes/webhookHandler';
 import webhook from './routes/webhook';
 import refreshToken from './routes/refreshToken';
 import { rawBodySaver } from './webhookUtils';
+import createTransfersRecipient from './routes/createTransfersRecipient';
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -52,6 +53,9 @@ app.prepare().then(() => {
   server.get('/invoices-for-company', getInvoicesForCompany);
   server.get('/invoice-by-id', getInvoiceById);
   server.get('/invoice-mappings', getInvoiceMapping);
+
+  // Regulated Partner
+  server.get('/create-transfers-recipient', createTransfersRecipient);
 
   // Webhook routes
   server.post('/webhook-handler', webhookHandler);

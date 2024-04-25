@@ -13,6 +13,7 @@ dist/
 # next.js
 /.next/
 /out/
+server/certificates/*
 
 # production
 /build

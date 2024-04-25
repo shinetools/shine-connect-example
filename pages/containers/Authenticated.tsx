@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import GetUserProfile from '../features/GetUserProfile';
@@ -21,8 +21,7 @@ import GetInvoiceById from '../features/GetInvoiceById';
 import GetInvoiceMappings from '../features/GetInvoiceMappings';
 import GetWebhooks from '../features/GetWebhooks';
 import RefreshToken from '../features/RefreshToken';
-import Button from '../components/Button';
-import { useRouter } from 'next/router';
+import CreateTransfersRecipient from '../features/CreateTransfersRecipient';
 
 const Container = styled.div`
   display: flex;
@@ -53,11 +52,6 @@ const StyledSidebarHeader = styled.div`
 function Authenticated({ authenticatedData }: { authenticatedData: AuthenticatedData }) {
   const [operationOutput, setOperationOutput] = useState<string>(null);
   const [error, setError] = useState<string>(null);
-  const router = useRouter();
-
-  const goTo = useCallback(() => {
-    router.push(router.asPath + '&page=bank');
-  }, [router, authenticatedData]);
 
   if (!authenticatedData.authorized) {
     return <SignIn />;
@@ -66,125 +60,160 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
   return (
     <Container>
       <Sidebar width="500">
-        <StyledSidebarHeader>General information</StyledSidebarHeader>
         <Menu>
-          <GetUserProfile
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
+          <SubMenu label={<StyledSidebarHeader>General information</StyledSidebarHeader>} defaultOpen={true}>
+            <Menu>
+              <GetUserProfile
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetCompanyProfile
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <RefreshToken
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
         </Menu>
         <Menu>
-          <GetCompanyProfile
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <Menu>
-          <RefreshToken
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
+          <SubMenu label={<StyledSidebarHeader>Bank information</StyledSidebarHeader>}>
+            <Menu>
+              <GetBankAccounts
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
 
-        <StyledSidebarHeader>Bank information</StyledSidebarHeader>
-        <Menu>
-          <GetBankAccounts
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-
-        <StyledSidebarHeader>Transfers </StyledSidebarHeader>
-        <GetBankTransfers
-          setOperationOutput={setOperationOutput}
-          setError={setError}
-          authenticatedData={authenticatedData}
-        />
-
-        <GetBankTransferById
-          setOperationOutput={setOperationOutput}
-          setError={setError}
-          authenticatedData={authenticatedData}
-        />
-
-        <StyledSidebarHeader>Transactions </StyledSidebarHeader>
-
-        <Menu>
-          <GetTransactions
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <Menu>
-          <GetTransactionById
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <StyledSidebarHeader>Receipts </StyledSidebarHeader>
-        <Menu>
-          <GetReceiptForCompany
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <Menu>
-          <GetReceiptForTransaction
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
+            <StyledSidebarHeader>Transactions </StyledSidebarHeader>
+            <Menu>
+              <GetTransactions
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetTransactionById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
         </Menu>
 
         <Menu>
-          <GetReceiptById
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <StyledSidebarHeader>Invoices </StyledSidebarHeader>
-        <Menu>
-          <GetInvoicesForCompany
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <Menu>
-          <GetInvoiceById
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
-        </Menu>
-        <StyledSidebarHeader>Others </StyledSidebarHeader>
+          <SubMenu label={<StyledSidebarHeader>Bank Transfers Information</StyledSidebarHeader>}>
+            <Menu>
+              <GetBankTransfers
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
 
-        <Menu>
-          <GetInvoiceMappings
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
+            <Menu>
+              <GetBankTransferById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
         </Menu>
 
         <Menu>
-          <GetWebhooks
-            setOperationOutput={setOperationOutput}
-            setError={setError}
-            authenticatedData={authenticatedData}
-          />
+          <SubMenu label={<StyledSidebarHeader>Bank Transfer Operations</StyledSidebarHeader>}>
+            <Menu>
+              <CreateTransfersRecipient
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+
+            <Menu>
+              <GetBankTransferById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
+        </Menu>
+        <Menu>
+          <SubMenu label={<StyledSidebarHeader>Receipts </StyledSidebarHeader>}>
+            <Menu>
+              <GetReceiptForCompany
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetReceiptForTransaction
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetReceiptById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
         </Menu>
 
         <Menu>
-          <Button key="bankAccount" text="Get bank accounts" onClick={goTo}></Button>
+          <SubMenu label={<StyledSidebarHeader> Invoices </StyledSidebarHeader>}>
+            <Menu>
+              <GetInvoicesForCompany
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetInvoiceById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetInvoiceMappings
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
+        </Menu>
+
+        <Menu>
+          <SubMenu label={<StyledSidebarHeader>Webhooks </StyledSidebarHeader>}>
+            <Menu>
+              <GetWebhooks
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
         </Menu>
       </Sidebar>
       <ContainerOutput>

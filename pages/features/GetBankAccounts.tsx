@@ -14,7 +14,7 @@ function GetBankAccounts({ authenticatedData, setOperationOutput, setError }: Fe
         },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse({ status: err.response.status, text: err.message })));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
   }, [setError, setOperationOutput, authenticatedData]);
 
   return (
