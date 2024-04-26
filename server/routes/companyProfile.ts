@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { regulatedRequest } from '../regulatedRequest';
+import { shineRequest } from '../request';
 
 const getCompanyProfile = async (req: Request, res: Response) => {
   const { access_token, companyProfileId } = req.query;
 
   try {
-    const data = await regulatedRequest({
+    const data = await shineRequest({
       method: 'GET',
       path: `/companies/profiles/${companyProfileId}`,
       authorization: access_token as string,

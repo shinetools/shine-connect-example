@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { publicApiRequest } from '../publicApiRequest';
+import { shineRequest } from '../request';
 
 const getReceiptById = async (req: Request, res: Response) => {
   const { access_token, receiptId } = req.query;
 
   try {
-    const data = await publicApiRequest({
+    const data = await shineRequest({
       method: 'GET',
       path: `/receipts/${receiptId}`,
       authorization: access_token as string,

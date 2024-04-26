@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { publicApiRequest } from '../publicApiRequest';
+import { shineRequest } from '../request';
 
 const getBankTransferById = async (req: Request, res: Response) => {
   const { access_token, bankTransferId } = req.query;
 
   try {
-    const data = await publicApiRequest({
+    const data = await shineRequest({
       method: 'GET',
       path: `/bank/transfers/${bankTransferId}`,
       authorization: access_token as string,

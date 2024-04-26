@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { publicApiRequest } from '../publicApiRequest';
+import { shineRequest } from '../request';
 
 const getInvoiceById = async (req: Request, res: Response) => {
   const { access_token, invoiceId } = req.query;
 
   try {
-    const data = await publicApiRequest({
+    const data = await shineRequest({
       method: 'GET',
       path: `/invoices/${invoiceId}`,
       authorization: access_token as string,

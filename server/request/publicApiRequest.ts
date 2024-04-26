@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { shineApiHost, isLocal } from './config';
+import { shineApiHost, isLocal } from '../config';
 
 /**
  * This function is exclusively for the Shine development environment.

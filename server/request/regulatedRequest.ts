@@ -1,4 +1,4 @@
-import { shineApiHost, isLocal, qsealKeyPath, keyId, qwacCertPath, qwacKeyPath, rootCAPath } from './config';
+import { shineApiHost, isLocal, qsealKeyPath, keyId, qwacCertPath, qwacKeyPath, rootCAPath } from '../config';
 import { readFileSync } from 'fs';
 import httpSignature, { SignOptions } from 'http-signature';
 import { ClientRequest } from 'http';
