@@ -22,6 +22,9 @@ import GetInvoiceMappings from '../features/GetInvoiceMappings';
 import GetWebhooks from '../features/GetWebhooks';
 import RefreshToken from '../features/RefreshToken';
 import CreateTransfersRecipient from '../features/CreateTransfersRecipient';
+import GetTransfersRecipients from '../features/GetTransfersRecipients';
+import GetTransfersRecipientById from '../features/GetTransfersRecipientById';
+import CreateActionRequest from '../features/CreateActionRequest';
 
 const Container = styled.div`
   display: flex;
@@ -134,7 +137,7 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
         </Menu>
 
         <Menu>
-          <SubMenu label={<StyledSidebarHeader>Bank Transfer Operations</StyledSidebarHeader>}>
+          <SubMenu label={<StyledSidebarHeader>Bank Transfer Recipients</StyledSidebarHeader>}>
             <Menu>
               <CreateTransfersRecipient
                 setOperationOutput={setOperationOutput}
@@ -144,7 +147,25 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
             </Menu>
 
             <Menu>
-              <GetBankTransferById
+              <GetTransfersRecipients
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetTransfersRecipientById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+          </SubMenu>
+        </Menu>
+        <Menu>
+          <SubMenu label={<StyledSidebarHeader>Action Request </StyledSidebarHeader>}>
+            <Menu>
+              <CreateActionRequest
                 setOperationOutput={setOperationOutput}
                 setError={setError}
                 authenticatedData={authenticatedData}

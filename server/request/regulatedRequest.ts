@@ -16,7 +16,13 @@ const addLocalLoadBalancerHeaders = () => ({
   client_cert_chain_verified: 'true',
 });
 
-export type DoRequestParams = { method: string; path: string; authorization: string; payload?: unknown };
+export type DoRequestParams = {
+  method: string;
+  path: string;
+  authorization: string;
+  payload?: unknown;
+  shortLivedToken?: string;
+};
 export const convertObjectToString = (payload: unknown) => {
   if (!payload) return null;
   try {
@@ -84,7 +90,7 @@ const signRequest = (request: ClientRequest) => {
 
 export const regulatedRequest = async (params: DoRequestParams) =>
   new Promise((resolve, reject) => {
-    const { method, path, authorization, payload } = params;
+    const { method, path, authorization, payload, shortLivedToken } = params;
     let postData;
     if (payload) {
       try {
@@ -103,6 +109,7 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       method,
       headers: {
         ...(isLocal ? addLocalLoadBalancerHeaders() : {}), // This line is exclusively for the Shine development environment
+        ...(shortLivedToken ? { 'short-lived-token': shortLivedToken } : {}),
         ...getRequestHeaders(method, port),
         ...(postData
           ? {
@@ -159,7 +166,6 @@ export const regulatedRequest = async (params: DoRequestParams) =>
     });
 
     signRequest(req);
-    console.log('Request headers: \n', req.method, req.path, req.getHeaders());
     if (postData) {
       req.write(postData);
       req.end();

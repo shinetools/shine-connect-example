@@ -24,6 +24,9 @@ import webhook from './routes/webhook';
 import refreshToken from './routes/refreshToken';
 import { rawBodySaver } from './webhookUtils';
 import createTransfersRecipient from './routes/createTransfersRecipient';
+import getTransfersRecipientById from './routes/transfersRecipientById';
+import getTransfersRecipients from './routes/transfersRecipients';
+import createActionRequest from './routes/createActionRequest';
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -56,6 +59,9 @@ app.prepare().then(() => {
 
   // Regulated Partner
   server.get('/create-transfers-recipient', createTransfersRecipient);
+  server.get('/transfers-recipient-by-id', getTransfersRecipientById);
+  server.get('/transfers-recipients', getTransfersRecipients);
+  server.get('/create-action-request', createActionRequest);
 
   // Webhook routes
   server.post('/webhook-handler', webhookHandler);
