@@ -1,5 +1,4 @@
 const SHINE_AUTHENTICATION_PRODUCTION_URL = 'https://api.shine.fr/v2/authentication';
-// const SHINE_AUTHENTICATION_STAGING_URL = 'https://authentication-v2-tmszuhnzwq-ew.a.run.app/v2/authentication';
 const SHINE_AUTHENTICATION_STAGING_URL = 'https://api.staging.shine.fr/v2/authentication';
 
 const SHINE_REGULATED_PRODUCTION_HOST = 'connect.mtls.shine.fr';
