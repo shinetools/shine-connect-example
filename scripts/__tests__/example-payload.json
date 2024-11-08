@@ -1,0 +1,23 @@
+{
+  "method": "GET",
+  "url": "/users/profiles/e719f43e-a9bb-4dd8-bf61-68c0b251250e",
+  "headers": {
+    "public_load_balancer": "false",
+    "client_cert_present": "true",
+    "client_cert_chain_verified": "true",
+    "psu-accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+    "psu-accept-charset": "utf-8",
+    "psu-accept-encoding": "gzip, deflate, br",
+    "psu-accept-language": "en-US,en;q=0.9",
+    "psu-date": "2019-01-01T00:00:00Z",
+    "psu-http-method": "GET",
+    "psu-ip-address": "127.0.0.1",
+    "psu-ip-port": 443,
+    "psu-referer": "https://localhost:443/",
+    "psu-user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+    "authorization": "Bearer XXXX",
+    "host": "localhost:10081",
+    "date": "Wed, 17 Apr 2024 07:04:20 GMT",
+    "signature": "keyId=\"PSDFR-ACPR-71758\",algorithm=\"rsa-sha256\",headers=\"(request-target) date psu-ip-address psu-ip-port psu-http-method psu-date psu-user-agent psu-referer psu-accept psu-accept-charset psu-accept-encoding psu-accept-language\",signature=\"Z+zWXASDGNZ6bxdJ7vbH+sa9fewp4LVQ0VWcufhyo84tLau+9sklQYviAYp3s6ZeK0o/LwYBrlFIe4A7Auz3lJ42c7TqcP+tZpJqniVhKL0V9LjAdm/VpKgINF7qzStcvAE7P0Vph2hO9YnXTsTjKUtHu2mBUpCNVKXgNVRw4CMsLOnObijTFfKGb6RLsMb6g6ORVyOwZmsSsTgw+pboPI2+j8XCdVvmP1/It+dEvnog7Po4Am/Akqryo0Gc0gikveyRsyGiwK0nmkOiO7doDhVQ9MaQqIfCqvosXEQRstune+N4WbLzO3H1g9XIricdgDhgSeB93eKXhJ5+ZkdziQ==\""
+  }
+}

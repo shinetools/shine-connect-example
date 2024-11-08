@@ -1,0 +1,12 @@
+{
+  "CLIENT_ID": "",
+  "CLIENT_SECRET": "",
+  "SCOPE": "",
+  "REDIRECT_URI": "",
+  "WEBHOOK_SECRET": "",
+  "KEY_ID": "",
+  "QWAC_KEY_PATH": "./server/certificates/QWAC_KEY.pem",
+  "QWAC_CERT_PATH": "./server/certificates/QWAC_CERT.pem",
+  "QSEAL_KEY_PATH": "./server/certificates/QSEAL_KEY.pem",
+  "ROOT_CA_PATH": "./server/certificates/ROOT_CA.pem"
+}
