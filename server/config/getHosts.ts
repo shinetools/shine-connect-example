@@ -1,8 +1,8 @@
 const SHINE_AUTHENTICATION_PRODUCTION_URL = 'https://api.shine.fr/v2/authentication';
 const SHINE_AUTHENTICATION_STAGING_URL = 'https://api.staging.shine.fr/v2/authentication';
 
-const SHINE_REGULATED_PRODUCTION_HOST = 'connect.mtls.shine.fr';
-const SHINE_REGULATED_STAGING_HOST = 'mtls.connect.staging.shine.fr';
+const SHINE_REGULATED_PRODUCTION_HOST = 'connect.api.shine.fr';
+const SHINE_REGULATED_STAGING_HOST = 'connect.api.staging.shine.fr';
 const SHINE_REGULATED_DEV_HOST = 'localhost';
 
 const SHINE_PUBLIC_PRODUCTION_HOST = 'https://public.api.shine.fr';

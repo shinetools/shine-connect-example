@@ -22,7 +22,17 @@ const H2 = styled.h2`
 function SignIn() {
   const router = useRouter();
 
-  const values = ['openid', 'profile', 'user', 'company', 'email', 'bank', 'phone', 'invoices:read', 'receipts:read'];
+  const values = [
+    'openid',
+    'profile',
+    'user',
+    'company:profile:read',
+    'email',
+    'bank',
+    'phone',
+    'invoices:read',
+    'receipts:read',
+  ];
   const [selectedValues, setSelectedValues] = useState(['openid', 'profile', 'user:profile:read']);
 
   const handleSelectedValuesChange = (newSelectedValues: string[]) => {
