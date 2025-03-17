@@ -13,12 +13,12 @@ import GetTransactionById from '../features/GetTransactionById';
 import GetReceiptForTransaction from '../features/GetReceiptForTransaction';
 import GetReceiptById from '../features/GetReceiptById';
 import GetReceiptForCompany from '../features/GetReceiptForCompany';
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { Sidebar, Menu, SubMenu } from 'react-pro-sidebar';
 import GetInvoicesForCompany from '../features/GetInvoicesForCompany';
 import GetBankTransfers from '../features/GetBankTransfers';
 import GetBankTransferById from '../features/GetBankTransferById';
 import GetInvoiceById from '../features/GetInvoiceById';
-import GetInvoiceMappings from '../features/GetInvoiceMappings';
+import GetTransactionMappings from '../features/GetTransactionMappings';
 import GetWebhooks from '../features/GetWebhooks';
 import RefreshToken from '../features/RefreshToken';
 import CreateTransfersRecipient from '../features/CreateTransfersRecipient';
@@ -108,6 +108,13 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
             </Menu>
             <Menu>
               <GetTransactionById
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetTransactionMappings
                 setOperationOutput={setOperationOutput}
                 setError={setError}
                 authenticatedData={authenticatedData}
@@ -210,13 +217,6 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
             </Menu>
             <Menu>
               <GetInvoiceById
-                setOperationOutput={setOperationOutput}
-                setError={setError}
-                authenticatedData={authenticatedData}
-              />
-            </Menu>
-            <Menu>
-              <GetInvoiceMappings
                 setOperationOutput={setOperationOutput}
                 setError={setError}
                 authenticatedData={authenticatedData}

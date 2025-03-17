@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { shineRequest } from '../request';
 
-const getInvoiceMapping = async (req: Request, res: Response) => {
-  const { access_token, invoiceId } = req.query;
+const getTransactionMapping = async (req: Request, res: Response) => {
+  const { access_token, transactionId } = req.query;
 
   try {
     const data = await shineRequest({
       method: 'GET',
-      path: `/transaction_enrichment/invoice_mappings?invoiceId=${invoiceId}`,
+      path: `/transaction_enrichment/invoice_mappings?transactionId=${transactionId}`,
       authorization: access_token as string,
     });
     res.status(200).send(data);
@@ -19,4 +19,4 @@ const getInvoiceMapping = async (req: Request, res: Response) => {
   }
 };
 
-export default getInvoiceMapping;
+export default getTransactionMapping;

@@ -123,6 +123,7 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       // Client certificates for mutual TLS authentication
       cert: readFileSync(qwacCertPath),
       key: readFileSync(qwacKeyPath),
+      ca: readFileSync(rootCAPath),
     };
 
     // Make the HTTPS request
