@@ -17,7 +17,7 @@ import getReceiptForCompany from './routes/receiptForCompany';
 import getBankTransfers from './routes/bankTransfers';
 import getBankTransferById from './routes/bankTransferById';
 import getInvoiceById from './routes/invoiceById';
-import getInvoiceMapping from './routes/invoiceMapping';
+import getTransactionMapping from './routes/transactionMapping';
 import webhookHandler from './routes/webhookHandler';
 import webhook from './routes/webhook';
 import refreshToken from './routes/refreshToken';
@@ -55,7 +55,7 @@ app.prepare().then(() => {
   server.get('/receipt-by-id', getReceiptById);
   server.get('/invoices-for-company', getInvoicesForCompany);
   server.get('/invoice-by-id', getInvoiceById);
-  server.get('/invoice-mappings', getInvoiceMapping);
+  server.get('/transaction-mappings', getTransactionMapping);
 
   // Regulated Partner
   server.get('/create-transfers-recipient', createTransfersRecipient);
