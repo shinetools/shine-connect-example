@@ -13,7 +13,6 @@ const getUserProfile = async (req: Request, res: Response) => {
 
     res.status(200).send(data);
   } catch (error) {
-    console.log('Error fetching user profile:', error);
     res.status(error.status).send({
       status: error.status,
       message: error.body?.message,
