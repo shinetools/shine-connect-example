@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { Request, Response } from 'express';
-import { redirectUri, clientId, defaultScope, port, shineAuthHost } from './config';
+import { redirectUri, clientId, defaultScope, shineAuthHost } from './config';
 
 const login = async (req: Request, res: Response) => {
   const { requestedScope } = req.query;

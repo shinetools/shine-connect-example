@@ -107,6 +107,7 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       port,
       path,
       method,
+      protocol: 'https:',
       headers: {
         ...(isLocal ? addLocalLoadBalancerHeaders() : {}), // This line is exclusively for the Shine development environment
         ...(shortLivedToken ? { 'short-lived-token': shortLivedToken } : {}),
@@ -123,8 +124,10 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       // Client certificates for mutual TLS authentication
       cert: readFileSync(qwacCertPath),
       key: readFileSync(qwacKeyPath),
-      //ca: readFileSync(rootCAPath),
+      // ca: readFileSync(rootCAPath),
     };
+
+    console.log('Request options:', options);
 
     // Make the HTTPS request
     const req = https.request(options, (res) => {
@@ -142,6 +145,8 @@ export const regulatedRequest = async (params: DoRequestParams) =>
             } else {
               responseBody = data;
             }
+
+            console.log('Response body:', data);
           }
 
           if (responseBody.status >= 400) {
@@ -156,6 +161,7 @@ export const regulatedRequest = async (params: DoRequestParams) =>
             });
           }
         } catch (error) {
+          console.error('Error parsing response:', error);
           reject(error);
         }
       });

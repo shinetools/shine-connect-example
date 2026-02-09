@@ -1,0 +1,30 @@
+# Shine Connect API Configuration
+# Copy this file and update with your credentials
+
+default: &default
+  client_id: '6c9e6f6f-348a-4e28-ae09-f59bad6dc6b3'
+  client_secret: '6e6fea14a3fc5b3ac652480ab71adda3598197c39640d8b7aa'
+  scope: 'bank user:profile:read'
+  redirect_uri: 'http://localhost:9877/redirect'
+  webhook_secret: '53f72696c1b5ce0a88a946e317697e3548a9ccafc85fbf9599'
+  key_id: 'PSDFR-ACPR-71758'
+  qwac_key_path: '../server/certificates/QWAC_KEY.key'
+  qwac_cert_path: '../server/certificates/QWAC_CERT_2025.pem'
+  qseal_key_path: '../server/certificates/QSEAL_KEY.key'
+  root_ca_path: '../server/certificates/ROOT_CA.pem'
+
+development:
+  <<: *default
+  # api_host: 'https://public.api.staging.shine.fr'
+  api_host: 'https://mtls.connect.staging.shine.fr'
+  auth_host: 'https://api.staging.shine.fr/v2/authentication'
+
+staging:
+  <<: *default
+  api_host: 'https://public.api.staging.shine.fr'
+  auth_host: 'https://api.staging.shine.fr/v2/authentication'
+
+production:
+  <<: *default
+  api_host: 'https://public.api.shine.fr'
+  auth_host: 'https://api.shine.fr/v2/authentication'

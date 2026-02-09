@@ -56,6 +56,19 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
   const [operationOutput, setOperationOutput] = useState<string>(null);
   const [error, setError] = useState<string>(null);
 
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token');
+    const idToken = urlParams.get('id_token');
+    const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+
+    if (accessToken) {
+      setOperationOutput(
+        `idToken: ${idToken}\n Access Token: ${accessToken}\nDecoded Token: ${JSON.stringify(decodedToken, null, 2)}`,
+      );
+    }
+  }, []);
+
   if (!authenticatedData.authorized) {
     return <SignIn />;
   }

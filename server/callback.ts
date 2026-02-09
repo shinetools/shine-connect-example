@@ -12,16 +12,14 @@ const callback = async (req: Request, res: Response) => {
   console.log('Authorization request accepted 🎉');
   try {
     // ask for consent
-    const response = await axios.get(`${shineAuthHost}/oauth2/token`, {
-      params: {
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri,
-      },
+    const response = await axios.post(`${shineAuthHost}/oauth2/token`, {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
     });
-    const { access_token, refresh_token, metadata } = response.data;
+    const { access_token, refresh_token, metadata, id_token } = response.data;
     console.log('Tokens retrieved ✅');
 
     const { companyProfileId, uid, companyUserId } = metadata;
@@ -35,6 +33,7 @@ const callback = async (req: Request, res: Response) => {
         companyProfileId,
         companyUserId,
         uid,
+        id_token,
       })}`,
     );
   } catch (e) {
