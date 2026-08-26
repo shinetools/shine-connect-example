@@ -53,12 +53,18 @@ const StyledSidebarHeader = styled.div`
   }
 `;
 
-function Authenticated({ authenticatedData }: { authenticatedData: AuthenticatedData }) {
+function Authenticated({
+  authenticatedData,
+  isPublicAPI,
+}: {
+  authenticatedData: AuthenticatedData;
+  isPublicAPI: boolean;
+}) {
   const [operationOutput, setOperationOutput] = useState<string>(null);
   const [error, setError] = useState<string>(null);
 
   if (!authenticatedData.authorized) {
-    return <SignIn />;
+    return <SignIn isPublicAPI={isPublicAPI} />;
   }
 
   return (

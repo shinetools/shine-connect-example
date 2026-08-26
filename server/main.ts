@@ -36,13 +36,14 @@ app.prepare().then(() => {
   const server = express();
   // This is required to parse the request body as raw to check the signature
   server.use(express.json({ verify: rawBodySaver }));
-  console.log('Loaded configuration', config);
 
-  const redirectUriPath = url.parse(redirectUri).pathname;
+  console.log('Loaded configuration: ', config);
 
   server.get('/login', login);
-  server.get(redirectUriPath, callback);
   server.get('/refresh-token', refreshToken);
+
+  const redirectUriPath = url.parse(redirectUri).pathname;
+  server.get(redirectUriPath, callback);
 
   server.get('/user-profile', getUserProfile);
   server.get('/company-profile', getCompanyProfile);
@@ -69,6 +70,7 @@ app.prepare().then(() => {
   server.post('/webhook-handler', webhookHandler);
   server.get('/webhook', webhook);
 
-  server.get('*', (req, res) => handle(req, res));
+  server.get('/{*splat}', (req, res) => handle(req, res));
+
   server.listen(port, () => console.info(`Server listening on port ${port}`));
 });

@@ -6,6 +6,8 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Button from '../components/Button';
 import ScopeList from '../components/ScopeList';
+import { dsp2Scopes, minimalScopes, publicApiScopes } from '../../server/config/scopes';
+import { isPublicAPI } from '../../server/config';
 
 const Container = styled.div`
   display: flex;
@@ -19,21 +21,11 @@ const H2 = styled.h2`
   margin-bottom: 20px;
 `;
 
-function SignIn() {
+function SignIn({isPublicAPI}: {isPublicAPI: boolean}) {
   const router = useRouter();
+  const [selectedValues, setSelectedValues] = useState(minimalScopes);
 
-  const values = [
-    'openid',
-    'profile',
-    'user',
-    'company:profile:read',
-    'email',
-    'bank',
-    'phone',
-    'invoices:read',
-    'receipts:read',
-  ];
-  const [selectedValues, setSelectedValues] = useState(['openid', 'profile', 'user:profile:read']);
+  const scopes = isPublicAPI ? publicApiScopes : dsp2Scopes;
 
   const handleSelectedValuesChange = (newSelectedValues: string[]) => {
     setSelectedValues(newSelectedValues);
@@ -48,8 +40,8 @@ function SignIn() {
       <Head>
         <title>Shine Connect</title>
       </Head>
-      <H2>Select scope that you want to access:</H2>
-      <ScopeList values={values} selectedValues={selectedValues} onSelectedValuesChange={handleSelectedValuesChange} />
+      <H2>Select scope that you want to access</H2>
+      <ScopeList values={scopes} selectedValues={selectedValues} onSelectedValuesChange={handleSelectedValuesChange} />
       <Button text="Login with Shine" onClick={handleLogin} />
     </Container>
   );

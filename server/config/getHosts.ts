@@ -7,7 +7,7 @@ const SHINE_REGULATED_DEV_HOST = 'localhost';
 
 const SHINE_PUBLIC_PRODUCTION_HOST = 'https://public.api.shine.fr';
 const SHINE_PUBLIC_STAGING_HOST = 'https://public.api.staging.shine.fr';
-const SHINE_PUBLIC_DEV_HOST = 'http://localhost:10081';
+const SHINE_PUBLIC_DEV_HOST = 'http://localhost:10164'; // using dev-proxy to forward requests to the public API in dev mode
 
 /**
  *
