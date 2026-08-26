@@ -1,8 +1,9 @@
 {
-  "CLIENT_ID": "",
-  "CLIENT_SECRET": "",
-  "SCOPE": "",
-  "REDIRECT_URI": "",
+  "PSD2_REGULATION": false,
+  "CLIENT_ID": "__your_client_id__",
+  "CLIENT_SECRET": "__your_client_secret__",
+  "SCOPE": "__your_scopes__",
+  "REDIRECT_URI": "https://__your_redirection_callback__",
   "WEBHOOK_SECRET": "",
   "KEY_ID": "",
   "QWAC_KEY_PATH": "./server/certificates/QWAC_KEY.pem",

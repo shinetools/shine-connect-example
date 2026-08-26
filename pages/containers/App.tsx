@@ -10,7 +10,7 @@ import { AuthenticatedData } from '../utils';
 // parse authorized, uid, access_token and refresh_token from the query string
 const parseQueryString = (router: NextRouter) => qs.parse(router.asPath.split('?')[1]);
 
-function App() {
+function App({ isPublicAPI }: { isPublicAPI: boolean }) {
   const router = useRouter();
   const [authenticatedData, setAuthenticatedData] = useState<AuthenticatedData>(undefined);
 
@@ -19,7 +19,11 @@ function App() {
     setAuthenticatedData(params);
   }, [router, setAuthenticatedData]);
 
-  return authenticatedData?.authorized ? <Authenticated authenticatedData={authenticatedData} /> : <SignIn />;
+  return authenticatedData?.authorized ? (
+    <Authenticated authenticatedData={authenticatedData} isPublicAPI={isPublicAPI} />
+  ) : (
+    <SignIn isPublicAPI={isPublicAPI} />
+  );
 }
 
 export default App;

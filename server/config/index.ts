@@ -1,9 +1,12 @@
 import { getHosts } from './getHosts';
 import config from './config.json';
+import { dsp2Scopes, publicApiScopes } from './scopes';
+
 const {
+  PSD2_REGULATION: psd2Regulation,
   CLIENT_ID: clientId,
   CLIENT_SECRET: clientSecret,
-  SCOPE: defaultScope,
+  SCOPE: clientScopes,
   REDIRECT_URI: redirectUri,
   WEBHOOK_SECRET: webhookSecret,
   KEY_ID: keyId,
@@ -17,12 +20,14 @@ const isStaging = process.env.API_ENV === 'staging';
 const isProd = process.env.API_ENV === 'production';
 const isLocal = !isProd && !isStaging;
 
-const isPublicAPI = process.env.PUBLIC_API === 'true';
+const isPublicAPI = psd2Regulation === false;
 
 const port = process.env.PORT || 9876;
 const dev = isLocal || isStaging;
 
 const { shineApiHost, shineAuthHost } = getHosts(isLocal, isStaging, isPublicAPI);
+
+const availableScopes = isPublicAPI ? publicApiScopes : dsp2Scopes;
 
 export {
   shineAuthHost,
@@ -31,14 +36,15 @@ export {
   port,
   clientId,
   clientSecret,
-  defaultScope,
+  clientScopes,
+  availableScopes,
   dev,
   isLocal,
+  isPublicAPI,
   webhookSecret,
   keyId,
   qwacKeyPath,
   qwacCertPath,
   qsealKeyPath,
   rootCAPath,
-  isPublicAPI,
 };
