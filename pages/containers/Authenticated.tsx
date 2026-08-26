@@ -8,6 +8,7 @@ import SignIn from './SignIn';
 import { AuthenticatedData } from '../utils';
 import GetCompanyProfile from '../features/GetCompanyProfile';
 import GetBankAccounts from '../features/GetBankAccounts';
+import GetBankAccountById from '../features/GetBankAccountById';
 import GetTransactions from '../features/GetTransactions';
 import GetTransactionById from '../features/GetTransactionById';
 import GetReceiptForTransaction from '../features/GetReceiptForTransaction';
@@ -92,6 +93,13 @@ function Authenticated({ authenticatedData }: { authenticatedData: Authenticated
           <SubMenu label={<StyledSidebarHeader>Bank information</StyledSidebarHeader>}>
             <Menu>
               <GetBankAccounts
+                setOperationOutput={setOperationOutput}
+                setError={setError}
+                authenticatedData={authenticatedData}
+              />
+            </Menu>
+            <Menu>
+              <GetBankAccountById
                 setOperationOutput={setOperationOutput}
                 setError={setError}
                 authenticatedData={authenticatedData}
