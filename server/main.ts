@@ -9,6 +9,7 @@ import callback from './callback';
 import getUserProfile from './routes/userProfile';
 import getCompanyProfile from './routes/companyProfile';
 import getBankAccounts from './routes/bankAccounts';
+import getBankAccountById from './routes/bankAccountById';
 import getTransactions from './routes/transactions';
 import getTransactionById from './routes/transactionById';
 import getReceiptForTransaction from './routes/receiptForTransaction';
@@ -46,6 +47,7 @@ app.prepare().then(() => {
   server.get('/user-profile', getUserProfile);
   server.get('/company-profile', getCompanyProfile);
   server.get('/bank-accounts', getBankAccounts);
+  server.get('/bank-account-by-id', getBankAccountById);
   server.get('/bank-transfers', getBankTransfers);
   server.get('/bank-transfer-by-id', getBankTransferById);
   server.get('/transactions', getTransactions);
