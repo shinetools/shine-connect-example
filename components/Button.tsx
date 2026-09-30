@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Action = styled.button`
+const Action = styled.button<{ disabled?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,13 +14,13 @@ const Action = styled.button`
   z-index: 1;
   border-radius: 60px;
   font-size: 16px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   background-color: #fee827;
   color: black;
   transition: all 200ms;
   box-shadow: 0 2px 8px 2px rgba(84, 101, 252, 0.2);
   text-decoration: none;
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #fff7db;
   }
   &:focus {
@@ -30,9 +30,9 @@ const Action = styled.button`
 
 const Text = styled.span``;
 
-function Button({ text, onClick }) {
+function Button({ text, onClick, disabled = false }) {
   return (
-    <Action onClick={onClick}>
+    <Action onClick={onClick} disabled={disabled}>
       <Text>{text}</Text>
     </Action>
   );

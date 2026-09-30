@@ -6,8 +6,8 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Button from '../components/Button';
 import ScopeList from '../components/ScopeList';
-import { dsp2Scopes, minimalScopes, publicApiScopes } from '../../server/config/scopes';
-import { isPublicAPI } from '../../server/config';
+import { dsp2Scopes, minimalScopes, publicApiScopes } from '../server/config/scopes';
+import { isPublicAPI } from '../server/config';
 
 const Container = styled.div`
   display: flex;

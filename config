@@ -1,0 +1,13 @@
+{
+  "PSD2_REGULATION": true,
+  "CLIENT_ID": "996fc83d-97d7-48f1-9638-744d89874a8c",
+  "CLIENT_SECRET": "2fd0b7558b43c8b0c078ef2126a79eee336e8f47e0764dd6c5",
+  "SCOPE": "openid profile email phone user:profile:read company:profile:read bank:transactions:read bank:transfers:recipients:read bank:transfers:read bank:accounts:read receipts:read invoices:read",
+  "REDIRECT_URI": "http://localhost:9876/callback/redirect",
+  "WEBHOOK_SECRET": "",
+  "KEY_ID": "",
+  "QWAC_KEY_PATH": "./server/certificates/QWAC_KEY.pem",
+  "QWAC_CERT_PATH": "./server/certificates/QWAC_CERT.pem",
+  "QSEAL_KEY_PATH": "./server/certificates/QSEAL_KEY.pem",
+  "ROOT_CA_PATH": "./server/certificates/ROOT_CA.pem"
+}

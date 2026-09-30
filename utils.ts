@@ -1,4 +1,4 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 export type AuthenticatedData = {
@@ -13,8 +13,9 @@ export type AuthenticatedData = {
 
 export type FeatureParams = {
   authenticatedData: AuthenticatedData;
-  setOperationOutput: Dispatch<string>;
-  setError: Dispatch<string>;
+  setOperationOutput: Dispatch<SetStateAction<string | null>>;
+  setError: Dispatch<SetStateAction<string | null>>;
+  isPublicAPI?: boolean;
 };
 
 export const stringifyResponse = (data: unknown) => JSON.stringify(data, null, 2);
@@ -32,6 +33,21 @@ export const SInput = styled.input`
   padding-left: 0.25em;
   padding-top: 0.25em;
   min-width: 15em;
+
+  :focus {
+    border-color: #5eaefe;
+    outline: none;
+  }
+`;
+
+export const SSelect = styled.select`
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 0.5px solid #bdbdbd;
+  font-size: 1.1em;
+  padding: 0.25em;
+  min-width: 15em;
+  background: white;
 
   :focus {
     border-color: #5eaefe;

@@ -64,7 +64,7 @@ app.prepare().then(() => {
   server.get('/create-transfers-recipient', createTransfersRecipient);
   server.get('/transfers-recipient-by-id', getTransfersRecipientById);
   server.get('/transfers-recipients', getTransfersRecipients);
-  server.get('/create-action-request', createActionRequest);
+  server.post('/create-action-request', createActionRequest);
 
   // Webhook routes
   server.post('/webhook-handler', webhookHandler);

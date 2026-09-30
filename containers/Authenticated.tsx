@@ -60,8 +60,8 @@ function Authenticated({
   authenticatedData: AuthenticatedData;
   isPublicAPI: boolean;
 }) {
-  const [operationOutput, setOperationOutput] = useState<string>(null);
-  const [error, setError] = useState<string>(null);
+  const [operationOutput, setOperationOutput] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   if (!authenticatedData.authorized) {
     return <SignIn isPublicAPI={isPublicAPI} />;
@@ -190,6 +190,7 @@ function Authenticated({
                 setOperationOutput={setOperationOutput}
                 setError={setError}
                 authenticatedData={authenticatedData}
+                isPublicAPI={isPublicAPI}
               />
             </Menu>
           </SubMenu>

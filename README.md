@@ -50,3 +50,9 @@ yarn dev
 ### On your local environment
 
 Open your browser and go to [http://localhost:9876/](http://localhost:9876/).
+
+### Testing bank transfers for a Netherlands company
+
+Transfer creation uses the regulated mTLS API and requires Shine to enable your staging client and provide its QWAC/QSEAL credentials. Set `PSD2_REGULATION` to `true` in `server/config/config.json`, configure the certificate paths and `KEY_ID`, then start the app with `yarn dev`.
+
+In the authenticated UI, open **Action Request**, choose **Netherlands (inline SEPA recipient)**, and enter the NL bank account ID, recipient IBAN, recipient name, BIC, payment reference, and amount. The gateway determines the company market from the bank account ID; choose NL only with an NL account. The NL request requires `amount`, `bankAccountId`, `recipient` (`iban`, `name`, `bic`), and `userLabel`; it does not use a saved `bankTransferRecipientId`. Approve the action request in Shine when prompted.
