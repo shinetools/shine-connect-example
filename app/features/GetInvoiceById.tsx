@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, SInput, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, SInput, stringifyResponse } from '../../lib/utils';
 
 function GetInvoiceById({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const [invoiceId, setInvoiceId] = useState('');
@@ -16,7 +16,7 @@ function GetInvoiceById({ authenticatedData, setOperationOutput, setError }: Fea
         },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData, invoiceId]);
 
   return (

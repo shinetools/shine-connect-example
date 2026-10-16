@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, stringifyResponse } from '../../lib/utils';
 
 function RefreshToken({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const getWebhookEvent = useCallback(() => {
@@ -14,7 +14,7 @@ function RefreshToken({ authenticatedData, setOperationOutput, setError }: Featu
       })
 
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData]);
 
   return (

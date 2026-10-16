@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, SInput, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, SInput, stringifyResponse } from '../../lib/utils';
 
 function GetTransfersRecipientById({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const [transfersRecipientId, setTransfersRecipientId] = useState('');
@@ -16,7 +16,7 @@ function GetTransfersRecipientById({ authenticatedData, setOperationOutput, setE
         },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData, transfersRecipientId]);
 
   return (

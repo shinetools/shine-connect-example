@@ -13,8 +13,8 @@ export type AuthenticatedData = {
 
 export type FeatureParams = {
   authenticatedData: AuthenticatedData;
-  setOperationOutput: Dispatch<string>;
-  setError: Dispatch<string>;
+  setOperationOutput: Dispatch<string | null>;
+  setError: Dispatch<string | null>;
 };
 
 export const stringifyResponse = (data: unknown) => JSON.stringify(data, null, 2);

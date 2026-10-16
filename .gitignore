@@ -43,3 +43,7 @@ server/config/config.json
 db-*.json
 
 scripts/validate-signature.js
+
+# ignore example config files
+config.*.example.json
+config.json

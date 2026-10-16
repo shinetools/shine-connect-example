@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { shineApiHost, isLocal } from '../config';
+import { convertObjectToString } from './index';
 
 /**
  * This function is exclusively for the Shine development environment.
@@ -13,15 +14,6 @@ const addLocalLoadBalancerHeaders = () => ({
 });
 
 export type DoRequestParams = { method: string; path: string; authorization: string; payload?: unknown };
-export const convertObjectToString = (payload: unknown) => {
-  if (!payload) return null;
-  try {
-    const postData = JSON.stringify(payload);
-    return postData;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export const publicApiRequest = async (params: DoRequestParams) => {
   const { method, path, authorization, payload } = params;
@@ -52,8 +44,8 @@ export const publicApiRequest = async (params: DoRequestParams) => {
     })
     .catch((e: AxiosError) => {
       return {
-        body: e.response.data,
-        status: e.response.status,
+        body: e.response?.data ?? { message: e.message },
+        status: e.response?.status ?? 500,
       };
     });
 };

@@ -4,6 +4,7 @@
   "scripts": {
     "local": "nodemon",
     "dev": "API_ENV=staging nodemon",
+    "run:prod": "API_ENV=production ts-node --project tsconfig.server.json server/main.ts",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "API_ENV=staging node dist/main.js",
     "validate-signature": "tsc scripts/*.ts && node scripts/validate-signature.js"
