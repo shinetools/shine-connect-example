@@ -43,9 +43,16 @@ export const publicApiRequest = async (params: DoRequestParams) => {
       };
     })
     .catch((e: AxiosError) => {
+      if (!e.response) {
+        throw {
+          body: { message: e.message },
+          status: 500,
+        };
+      }
+
       return {
-        body: e.response?.data ?? { message: e.message },
-        status: e.response?.status ?? 500,
+        body: e.response.data,
+        status: e.response.status,
       };
     });
 };
