@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, SInput, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, SInput, stringifyResponse } from '../../lib/utils';
 
 function CreateTransfersRecipient({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const [iban, setIban] = useState('');
@@ -25,7 +25,7 @@ function CreateTransfersRecipient({ authenticatedData, setOperationOutput, setEr
       })
 
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData, iban, swiftBic, name]);
 
   return (

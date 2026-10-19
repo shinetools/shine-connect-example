@@ -22,7 +22,8 @@
         "name": "next"
       }
     ],
-    "incremental": true
+    "incremental": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -30,7 +31,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.js",
-    "scripts/validate-signature.mts"
+    "scripts/validate-signature.mts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

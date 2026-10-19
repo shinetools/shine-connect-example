@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, stringifyResponse } from '../../lib/utils';
 
 function GetWebhooks({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const getWebhooks = useCallback(() => {
@@ -11,7 +11,7 @@ function GetWebhooks({ authenticatedData, setOperationOutput, setError }: Featur
         params: { companyProfileId: authenticatedData.companyProfileId },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData]);
 
   return (

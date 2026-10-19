@@ -43,6 +43,9 @@ app.prepare().then(() => {
   server.get('/refresh-token', refreshToken);
 
   const redirectUriPath = url.parse(redirectUri).pathname;
+  if (redirectUriPath == null) {
+    throw new Error('redirectUri must include a pathname');
+  }
   server.get(redirectUriPath, callback);
 
   server.get('/user-profile', getUserProfile);

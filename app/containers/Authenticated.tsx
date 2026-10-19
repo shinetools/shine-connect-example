@@ -5,7 +5,7 @@ import GetUserProfile from '../features/GetUserProfile';
 import OperationOutput from '../components/OperationOutput';
 import ErrorOutput from '../components/ErrorOutput';
 import SignIn from './SignIn';
-import { AuthenticatedData } from '../utils';
+import { AuthenticatedData } from '../../lib/utils';
 import GetCompanyProfile from '../features/GetCompanyProfile';
 import GetBankAccounts from '../features/GetBankAccounts';
 import GetBankAccountById from '../features/GetBankAccountById';
@@ -60,8 +60,8 @@ function Authenticated({
   authenticatedData: AuthenticatedData;
   isPublicAPI: boolean;
 }) {
-  const [operationOutput, setOperationOutput] = useState<string>(null);
-  const [error, setError] = useState<string>(null);
+  const [operationOutput, setOperationOutput] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   if (!authenticatedData.authorized) {
     return <SignIn isPublicAPI={isPublicAPI} />;

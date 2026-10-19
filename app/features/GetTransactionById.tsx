@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, SInput, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, SInput, stringifyResponse } from '../../lib/utils';
 
 function GetTransactionById({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const [transactionId, setTransactionId] = useState('');
@@ -16,7 +16,7 @@ function GetTransactionById({ authenticatedData, setOperationOutput, setError }:
         },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData, transactionId]);
 
   return (

@@ -1,22 +1,22 @@
 import React, { useCallback, useState } from 'react';
 import Button from '../components/Button';
 import axios, { AxiosError } from 'axios';
-import { FeatureParams, SContainer, SInput, stringifyResponse } from '../utils';
+import { FeatureParams, SContainer, SInput, stringifyResponse } from '../../lib/utils';
 
-function GetTransactions({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
+function GetBankTransfers({ authenticatedData, setOperationOutput, setError }: FeatureParams) {
   const [bankAccountId, setBankAccountId] = useState('');
 
-  const getTransactions = useCallback(() => {
+  const getBankTransfers = useCallback(() => {
     setError(null);
     axios
-      .get('/transactions', {
+      .get('/bank-transfers', {
         params: {
           bankAccountId,
           access_token: authenticatedData.access_token, // in real world scenario, this should be stored in a your backend
         },
       })
       .then((result) => setOperationOutput(stringifyResponse(result.data)))
-      .catch((err: AxiosError) => setError(stringifyResponse(err.response.data)));
+      .catch((err: AxiosError) => setError(stringifyResponse(err.response?.data ?? err.message)));
   }, [setError, setOperationOutput, authenticatedData, bankAccountId]);
 
   return (
@@ -29,9 +29,9 @@ function GetTransactions({ authenticatedData, setOperationOutput, setError }: Fe
         size={40}
       />
 
-      <Button key="transactions" text="Get transactions" onClick={getTransactions} />
+      <Button key="bank-transfers" text="Get bank transfers" onClick={getBankTransfers} />
     </SContainer>
   );
 }
 
-export default GetTransactions;
+export default GetBankTransfers;

@@ -1,9 +1,10 @@
-import { shineApiHost, isLocal, qsealKeyPath, keyId, qwacCertPath, qwacKeyPath, rootCAPath } from '../config';
+import { isLocal, keyId, qsealKeyPath, qwacCertPath, qwacKeyPath, shineApiHost, rootCAPath } from '../config';
 import { readFileSync } from 'fs';
 import httpSignature, { SignOptions } from 'http-signature';
 import { ClientRequest } from 'http';
 import https from 'https';
 import crypto from 'crypto';
+import { convertObjectToString } from './index';
 
 /**
  * This function is exclusively for the Shine development environment.
@@ -22,15 +23,6 @@ export type DoRequestParams = {
   authorization: string;
   payload?: unknown;
   shortLivedToken?: string;
-};
-export const convertObjectToString = (payload: unknown) => {
-  if (!payload) return null;
-  try {
-    const postData = JSON.stringify(payload);
-    return postData;
-  } catch (error) {
-    throw error;
-  }
 };
 
 const getRequiredQsealHeaders = () => [
@@ -91,14 +83,7 @@ const signRequest = (request: ClientRequest) => {
 export const regulatedRequest = async (params: DoRequestParams) =>
   new Promise((resolve, reject) => {
     const { method, path, authorization, payload, shortLivedToken } = params;
-    let postData;
-    if (payload) {
-      try {
-        postData = JSON.stringify(payload);
-      } catch (error) {
-        reject(error);
-      }
-    }
+    const postData = convertObjectToString(payload);
 
     const port = 443;
 
@@ -123,7 +108,7 @@ export const regulatedRequest = async (params: DoRequestParams) =>
       // Client certificates for mutual TLS authentication
       cert: readFileSync(qwacCertPath),
       key: readFileSync(qwacKeyPath),
-      //ca: readFileSync(rootCAPath),
+      
     };
 
     // Make the HTTPS request
@@ -137,7 +122,8 @@ export const regulatedRequest = async (params: DoRequestParams) =>
         try {
           let responseBody;
           if (data) {
-            if (res.headers['content-type'].includes('application/json')) {
+            const contentType = res.headers['content-type'];
+            if (typeof contentType === 'string' && contentType.includes('application/json')) {
               responseBody = JSON.parse(data);
             } else {
               responseBody = data;
